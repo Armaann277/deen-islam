@@ -70,7 +70,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
               transitionDelay: "450ms",
             }}
           >
-            Deen Islam.
+            Salah Reminder.
           </p>
         </div>
 

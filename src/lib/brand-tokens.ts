@@ -1,9 +1,9 @@
-// DEEN ISLAM ☪ — Brand Design Tokens
+// SALAH REMINDER ☪ — Brand Design Tokens
 // Generated from locked color system
 
 export const brand = {
-  name: "Deen Islam",
-  tagline: "your daily companion for prayer",
+  name: "Salah Reminder",
+  tagline: "never miss a prayer",
   icon: "☪",
 
   palette: {
