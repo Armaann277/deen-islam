@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Falah — Never Miss a Prayer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --amaranth:#933B5B;--thulian:#B5728A;--brook:#AABAAE;--chalk:#E3D6BF;
+  --pomelo:#9F9679;--veranda:#6BB1AD;--sky:#A7BCBD;--lychee:#EDECDB;
+  --melon:#E5A9A9;--cupid:#E6748E;--peach:#FCC59E;--coral:#FF9F9A;
+  --rose:#E66277;--deepRose:#AD4161;--wineRose:#8F3858;--deepPlum:#562747;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  font-family:'Inter',sans-serif;background:var(--deepPlum);color:var(--chalk);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;position:relative;overflow:hidden;padding:40px 20px;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(147,59,91,0.3) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 50% at 80% 80%,rgba(107,177,173,0.15) 0%,transparent 50%),
+             radial-gradient(ellipse 50% 40% at 10% 60%,rgba(230,114,142,0.1) 0%,transparent 50%);
+  z-index:0;
+}
+
+/* Floating geometric shapes */
+.geo{position:absolute;border-radius:50%;opacity:0.06;z-index:0}
+.geo-1{width:400px;height:400px;top:-100px;right:-100px;background:var(--veranda);animation:float1 20s ease-in-out infinite}
+.geo-2{width:300px;height:300px;bottom:-50px;left:-80px;background:var(--cupid);animation:float2 25s ease-in-out infinite}
+.geo-3{width:200px;height:200px;top:30%;left:10%;background:var(--pomelo);animation:float3 18s ease-in-out infinite}
+.geo-4{width:150px;height:150px;top:20%;right:15%;background:var(--rose);animation:float1 22s ease-in-out infinite reverse}
+
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.1)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20px,30px) scale(1.05)}}
+@keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-20px)}}
+
+/* Crescent moon */
+.crescent{
+  position:relative;width:80px;height:80px;margin-bottom:32px;z-index:1;
+}
+.crescent::before{
+  content:'☪';font-size:72px;color:var(--veranda);
+  filter:drop-shadow(0 0 40px rgba(107,177,173,0.4));
+  animation:pulse 3s ease-in-out infinite;display:block;text-align:center;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:0.85}}
+
+.hero-title{
+  font-family:'Playfair Display',Georgia,serif;font-size:clamp(48px,10vw,88px);
+  font-weight:700;letter-spacing:-2px;line-height:1;z-index:1;
+  background:linear-gradient(135deg,var(--chalk) 0%,var(--melon) 50%,var(--cupid) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;text-align:center;margin-bottom:16px;
+  animation:fadeUp 1s ease-out 0.2s both;
+}
+.hero-sub{
+  font-size:clamp(16px,3vw,22px);color:var(--thulian);font-weight:300;
+  letter-spacing:3px;text-transform:uppercase;z-index:1;text-align:center;
+  animation:fadeUp 1s ease-out 0.4s both;margin-bottom:48px;
+}
+
+/* Phone mockup */
+.phone-wrap{
+  position:relative;z-index:1;margin-bottom:48px;
+  animation:fadeUp 1s ease-out 0.6s both;
+}
+.phone{
+  width:260px;height:520px;border-radius:36px;
+  background:linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));
+  backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);
+  padding:12px;position:relative;overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.05) inset;
+}
+.phone-screen{
+  width:100%;height:100%;border-radius:28px;overflow:hidden;
+  background:linear-gradient(180deg,var(--lychee) 0%,var(--chalk) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;position:relative;
+}
+.phone-screen::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:100px;height:28px;background:var(--deepPlum);border-radius:0 0 16px 16px;
+}
+.phone-greeting{
+  font-family:'Playfair Display',serif;font-size:14px;color:var(--wineRose);
+  margin-top:20px;text-align:center;
+}
+.phone-prayer{
+  font-family:'Playfair Display',serif;font-size:28px;color:var(--amaranth);
+  font-weight:700;margin:8px 0 4px;
+}
+.phone-time{font-size:12px;color:var(--thulian);letter-spacing:1px}
+.phone-nav{
+  position:absolute;bottom:12px;left:12px;right:12px;
+  display:flex;justify-content:space-around;
+  background:rgba(255,255,255,0.8);backdrop-filter:blur(10px);
+  border-radius:12px;padding:8px 4px;
+}
+.phone-nav span{font-size:8px;color:var(--brook);text-align:center}
+.phone-nav span.active{color:var(--amaranth);font-weight:600}
+
+/* Glow behind phone */
+.phone-glow{
+  position:absolute;width:300px;height:300px;
+  background:radial-gradient(circle,rgba(107,177,173,0.2) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);z-index:-1;
+  animation:glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+
+/* CTA Button */
+.cta-wrap{z-index:1;animation:fadeUp 1s ease-out 0.8s both;text-align:center}
+.cta{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:18px 48px;border-radius:60px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--amaranth),var(--deepRose));
+  color:white;font-family:'Inter',sans-serif;font-size:18px;font-weight:600;
+  letter-spacing:0.5px;text-decoration:none;
+  box-shadow:0 8px 32px rgba(147,59,91,0.4),0 0 0 1px rgba(255,255,255,0.1) inset;
+  transition:all 0.3s cubic-bezier(0.23,1,0.32,1);
+  position:relative;overflow:hidden;
+}
+.cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.cta:hover::before{opacity:1}
+.cta:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 20px 40px rgba(147,59,91,0.4)}
+.cta:active{transform:translateY(0) scale(0.98)}
+.cta svg{width:24px;height:24px;fill:currentColor}
+.cta-label{font-size:13px;color:var(--thulian);margin-top:12px;z-index:1}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* FEATURES SECTION */
+.features{
+  padding:80px 20px;max-width:900px;margin:0 auto;
+  background:linear-gradient(180deg,var(--deepPlum),rgba(86,39,71,0.95));
+}
+.section-title{
+  font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,42px);
+  text-align:center;margin-bottom:12px;color:var(--chalk);
+}
+.section-sub{
+  text-align:center;color:var(--thulian);font-size:16px;margin-bottom:60px;
+  font-weight:300;letter-spacing:1px;
+}
+.feature-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;
+}
+.feature-card{
+  padding:32px 24px;border-radius:20px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+  transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
+  position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.03),transparent);
+  opacity:0;transition:opacity 0.4s;
+}
+.feature-card:hover{
+  transform:translateY(-4px);border-color:rgba(255,255,255,0.12);
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+.feature-card:hover::before{opacity:1}
+.feature-icon{
+  width:48px;height:48px;border-radius:14px;display:flex;align-items:center;
+  justify-content:center;font-size:24px;margin-bottom:16px;
+}
+.feature-card:nth-child(1) .feature-icon{background:rgba(107,177,173,0.15);color:var(--veranda)}
+.feature-card:nth-child(2) .feature-icon{background:rgba(230,114,142,0.15);color:var(--cupid)}
+.feature-card:nth-child(3) .feature-icon{background:rgba(159,150,121,0.15);color:var(--pomelo)}
+.feature-card:nth-child(4) .feature-icon{background:rgba(244,196,158,0.15);color:var(--peach)}
+.feature-card:nth-child(5) .feature-icon{background:rgba(230,98,119,0.15);color:var(--rose)}
+.feature-card:nth-child(6) .feature-icon{background:rgba(86,39,71,0.3);color:var(--melon)}
+.feature-name{
+  font-family:'Playfair Display',serif;font-size:20px;color:var(--chalk);
+  margin-bottom:8px;font-weight:600;
+}
+.feature-desc{font-size:14px;color:var(--thulian);line-height:1.6}
+
+/* QUOTE SECTION */
+.quote-section{
+  padding:100px 20px;text-align:center;position:relative;overflow:hidden;
+}
+.quote-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(147,59,91,0.15),transparent 70%);
+}
+.quote{
+  font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,40px);
+  font-style:italic;color:var(--melon);line-height:1.4;max-width:700px;
+  margin:0 auto 16px;position:relative;z-index:1;
+}
+.quote-attr{
+  color:var(--pomelo);font-size:14px;letter-spacing:2px;text-transform:uppercase;
+  position:relative;z-index:1;
+}
+
+/* FOOTER */
+.footer{
+  padding:40px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.06);
+}
+.footer-text{font-size:13px;color:var(--brook)}
+.footer-text a{color:var(--veranda);text-decoration:none}
+
+/* Particles canvas */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* Mobile adjustments */
+@media(max-width:600px){
+  .phone{width:220px;height:440px}
+  .feature-grid{grid-template-columns:1fr}
+  .cta{padding:16px 40px;font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="geo geo-1"></div>
+  <div class="geo geo-2"></div>
+  <div class="geo geo-3"></div>
+  <div class="geo geo-4"></div>
+
+  <div class="crescent"></div>
+  <h1 class="hero-title">Falah</h1>
+  <p class="hero-sub">Never miss a prayer</p>
+
+  <div class="phone-wrap">
+    <div class="phone-glow"></div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-greeting">Assalamu Alaikum</div>
+        <div class="phone-prayer">Asr</div>
+        <div class="phone-time">in 2h 14m</div>
+        <div class="phone-nav">
+          <span class="active">Home</span>
+          <span>Quran</span>
+          <span>Salah</span>
+          <span>Dua</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <a href="https://github.com/Armaann277/deen-islam/releases/download/v3.0/Falah-v3.0.apk" class="cta" download>
+      <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+      Install Falah
+    </a>
+    <p class="cta-label">Free download · No ads · No signup</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <h2 class="section-title">Everything you need</h2>
+  <p class="section-sub">Beautifully crafted for your daily worship</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🕌</div>
+      <div class="feature-name">Prayer Times</div>
+      <div class="feature-desc">Accurate prayer times based on your location. Never miss Fajr, Dhuhr, Asr, Maghrib, or Isha.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <div class="feature-name">Adhan Alarm</div>
+      <div class="feature-desc">Gentle notifications when it's time to pray. Toggle on or off — you're always in control.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📖</div>
+      <div class="feature-name">Quran</div>
+      <div class="feature-desc">Read and listen to random ayahs with Arabic text and English translation.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌙</div>
+      <div class="feature-name">Dua & Bedtime</div>
+      <div class="feature-desc">Bedtime checklist, night dua, and spiritual reminders to end your day with barakah.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <div class="feature-name">Hijri Calendar</div>
+      <div class="feature-desc">Always know the Islamic date. Hijri calendar displayed right on your home screen.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✨</div>
+      <div class="feature-name">Daily Ayah</div>
+      <div class="feature-desc">A new ayah every day to inspire you. Reflect, read, and share with loved ones.</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <p class="quote">"Indeed, prayer has been decreed upon the believers a decree of specified times."</p>
+  <p class="quote-attr">— Surah An-Nisa 4:103</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p class="footer-text">Made with ♡ for the Ummah · <a href="https://github.com/Armaann277/deen-islam">GitHub</a></p>
+</footer>
+
+<script>
+// Floating particles
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();addEventListener('resize',resize);
+
+class Particle{
+  constructor(){
+    this.reset();
+    this.y=Math.random()*canvas.height;
+  }
+  reset(){
+    this.x=Math.random()*canvas.width;
+    this.y=canvas.height+10;
+    this.size=Math.random()*2+0.5;
+    this.speedY=-(Math.random()*0.3+0.1);
+    this.speedX=(Math.random()-0.5)*0.2;
+    this.opacity=Math.random()*0.3+0.05;
+  }
+  update(){
+    this.y+=this.speedY;
+    this.x+=this.speedX;
+    if(this.y<-10)this.reset();
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle=`rgba(236,220,203,${this.opacity})`;
+    ctx.fill();
+  }
+}
+for(let i=0;i<60;i++)particles.push(new Particle());
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{p.update();p.draw()});
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Intersection observer for fade-in
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('.feature-card,.quote').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(30px)';
+  el.style.transition='all 0.6s cubic-bezier(0.23,1,0.32,1)';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
