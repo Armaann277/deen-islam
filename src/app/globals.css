@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+:root {
+  /* Subhana Brand Palette */
+  --amaranth: #933B5B;
+  --thulian-pink: #B5728A;
+  --brook-green: #AABAAE;
+  --chalk: #E3D6BF;
+  --pomelo-olive: #9F9679;
+
+  --veranda-blue: #6BB1AD;
+  --sky-cloud: #A7BCBD;
+  --lychee: #EDECDB;
+  --melon: #E5A9A9;
+  --cupid-pink: #E6748E;
+
+  --warm-peach: #FCC59E;
+  --coral: #FF9F9A;
+  --rose: #E66277;
+  --deep-rose: #AD4161;
+  --wine-rose: #8F3858;
+  --deep-plum: #562747;
+
+  /* Semantic tokens */
+  --background: var(--chalk);
+  --foreground: var(--deep-plum);
+  --surface: var(--lychee);
+  --primary: var(--amaranth);
+  --secondary: var(--thulian-pink);
+  --muted: var(--brook-green);
+  --accent: var(--veranda-blue);
+
+  /* Animation tokens */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --duration-fast: 160ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  /* Spacing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --font-sans: system-ui, -apple-system, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: ui-monospace, monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch feedback for interactive elements */
+@media (hover: hover) and (pointer: fine) {
+  .pressable:hover {
+    transform: scale(1.02);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+}
+
+.pressable:active {
+  transform: scale(0.97);
+  transition: transform 100ms var(--ease-out);
+}
+
+/* Dropdown animation */
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--thulian-pink);
+  border-radius: var(--radius-full);
+}
+
+/* Safe area support for iPhone */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Mobile-first optimizations */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+}
+
+body {
+  overscroll-behavior: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Smooth scrolling for mobile */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+/* Touch-friendly button base */
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Prevent text selection on interactive elements */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Mobile typography optimization */
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 16px;
+  }
+  
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Prevent zoom on input focus */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
