@@ -70,7 +70,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
               transitionDelay: "450ms",
             }}
           >
-            Salah Reminder.
+            Falah.
           </p>
         </div>
 

@@ -1676,7 +1676,7 @@ export default function AppShell() {
         minHeight: "100vh",
         background: `linear-gradient(180deg, ${COLORS.lychee}, white)`,
         fontFamily: "system-ui, -apple-system, sans-serif",
-        paddingBottom: "calc(80px + env(safe-area-inset-bottom, 0px))",
+        paddingBottom: "calc(56px + env(safe-area-inset-bottom, 0px))",
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
@@ -1699,8 +1699,8 @@ export default function AppShell() {
           display: "flex",
           justifyContent: "center",
           gap: 0,
-          padding: "8px 0",
-          paddingBottom: "max(8px, env(safe-area-inset-bottom))",
+          padding: "4px 0",
+          paddingBottom: "max(4px, env(safe-area-inset-bottom))",
           zIndex: 100,
         }}
       >
@@ -1714,8 +1714,8 @@ export default function AppShell() {
                 ...cardBtn,
                 background: "none",
                 border: "none",
-                padding: "10px 24px",
-                minHeight: 48,
+                padding: "6px 20px",
+                minHeight: 40,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -1727,7 +1727,7 @@ export default function AppShell() {
             >
               <div
                 style={{
-                  transform: isActive ? "scale(1.15)" : "scale(1)",
+                  transform: isActive ? "scale(1.1)" : "scale(1)",
                   transition: "transform 0.2s ease",
                 }}
               >
@@ -1735,7 +1735,7 @@ export default function AppShell() {
               </div>
               <span
                 style={{
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: isActive ? 700 : 500,
                   letterSpacing: isActive ? 0.3 : 0,
                 }}

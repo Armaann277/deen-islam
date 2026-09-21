@@ -1,8 +1,8 @@
-// SALAH REMINDER ☪ — Brand Design Tokens
+// FALAH ☪ — Brand Design Tokens
 // Generated from locked color system
 
 export const brand = {
-  name: "Salah Reminder",
+  name: "Falah",
   tagline: "never miss a prayer",
   icon: "☪",
 

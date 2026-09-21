@@ -2,12 +2,12 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Salah Reminder ☪",
+  title: "Falah ☪",
   description: "Never miss a prayer again",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Salah Reminder",
+    title: "Falah",
   },
 };
 
