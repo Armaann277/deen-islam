@@ -16,15 +16,8 @@ import {
 } from "@phosphor-icons/react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { motion, AnimatePresence } from "motion/react";
-import { FadeIn, ScaleIn, SlideIn, StaggerContainer, StaggerItem, TapScale, AnimatePresenceWrapper } from "./animations/MotionComponents";
-import { AnimatedHeart, AnimatedStar } from "./animations/LottiePlayer";
-import { animateButton, animateStagger } from "./animations/useAnime";
-import { FloatingDots } from "./animations/RiveAnimation";
-import dynamic from "next/dynamic";
+import { FadeIn } from "./animations/MotionComponents";
 import { useAdhan } from "./AdhanContext";
-
-const ThreeBackground = dynamic(() => import("./animations/ThreeBackground").then(mod => mod.default), { ssr: false });
 
 type Screen =
   | "home"
@@ -249,8 +242,7 @@ function HomeScreen({ navigate }: { navigate: (s: Screen) => void }) {
   return (
     <div ref={containerRef} style={{ position: "relative", minHeight: "100vh" }}>
       <BgImage src="/images/home-coastal.jpg" overlay={0.5} />
-      <ThreeBackground style={{ opacity: 0.3 }} />
-      <FloatingDots count={15} />
+
       <div style={{ position: "relative", zIndex: 1, padding: "20px", maxWidth: 480, margin: "0 auto" }}>
       <div ref={greetingRef} style={{ opacity: 0 }}>
         <FadeIn delay={0.1}>
@@ -267,7 +259,6 @@ function HomeScreen({ navigate }: { navigate: (s: Screen) => void }) {
           >
             {greeting}
           </h1>
-          <AnimatedHeart size={30} />
         </FadeIn>
       </div>
 
@@ -1172,8 +1163,11 @@ function SalahScreen({ navigate }: { navigate: (s: Screen) => void }) {
 
 function QuranScreen({ navigate }: { navigate: (s: Screen) => void }) {
   const mounted = useMounted();
-  const [ayahData, setAyahData] = useState<{ arabic: string; english: string; surah: string; ayah: number } | null>(null);
+  const [ayahData, setAyahData] = useState<{ arabic: string; english: string; surah: string; ayah: number; surahNumber: number } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [audioLoading, setAudioLoading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     async function fetchAyah() {
@@ -1189,6 +1183,7 @@ function QuranScreen({ navigate }: { navigate: (s: Screen) => void }) {
           english: englishData.data.text,
           surah: arabicData.data.surah.englishName,
           ayah: arabicData.data.numberInSurah,
+          surahNumber: arabicData.data.surah.number,
         });
       } catch {
         setAyahData({
@@ -1196,11 +1191,59 @@ function QuranScreen({ navigate }: { navigate: (s: Screen) => void }) {
           english: "Allah does not burden a soul beyond that it can bear.",
           surah: "Al-Baqarah",
           ayah: 286,
+          surahNumber: 2,
         });
       }
       setLoading(false);
     }
     fetchAyah();
+  }, []);
+
+  const playAyah = useCallback(() => {
+    if (!ayahData) return;
+
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsPlaying(false);
+      return;
+    }
+
+    setAudioLoading(true);
+    const url = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayahData.surahNumber}:${ayahData.ayah}.mp3`;
+    const audio = new Audio(url);
+    audioRef.current = audio;
+
+    audio.addEventListener("canplaythrough", () => {
+      setAudioLoading(false);
+      setIsPlaying(true);
+      audio.play().catch(() => {
+        setIsPlaying(false);
+        setAudioLoading(false);
+      });
+    }, { once: true });
+
+    audio.addEventListener("ended", () => {
+      setIsPlaying(false);
+      audioRef.current = null;
+    }, { once: true });
+
+    audio.addEventListener("error", () => {
+      setAudioLoading(false);
+      setIsPlaying(false);
+      audioRef.current = null;
+    }, { once: true });
+
+    audio.load();
+  }, [ayahData, isPlaying]);
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
   }, []);
 
   return (
@@ -1315,37 +1358,79 @@ function QuranScreen({ navigate }: { navigate: (s: Screen) => void }) {
           ...fadeUp(mounted, 0.3),
         }}
       >
-        {[
-          { icon: <BookmarkSimple size={20} />, label: "Save" },
-          { icon: <SpeakerHigh size={20} />, label: "Listen" },
-          { icon: <Heart size={20} />, label: "Share" },
-        ].map((action) => (
-          <button
-            key={action.label}
-            style={{
-              ...cardBtn,
-              flex: 1,
-              padding: "14px 0",
-              borderRadius: 12,
-              border: `1px solid ${COLORS.thulian}30`,
-              background: "rgba(255,255,255,0.6)",
-              backdropFilter: "blur(10px)",
-              color: COLORS.primary,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 6,
-              fontSize: 14,
-              fontWeight: 500,
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
-            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-          >
-            {action.icon} {action.label}
-          </button>
-        ))}
+        <button
+          style={{
+            ...cardBtn,
+            flex: 1,
+            padding: "14px 0",
+            borderRadius: 12,
+            border: `1px solid ${COLORS.thulian}30`,
+            background: "rgba(255,255,255,0.6)",
+            backdropFilter: "blur(10px)",
+            color: COLORS.primary,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            fontSize: 14,
+            fontWeight: 500,
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+          onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+        >
+          <BookmarkSimple size={20} /> Save
+        </button>
+        <button
+          onClick={playAyah}
+          style={{
+            ...cardBtn,
+            flex: 1,
+            padding: "14px 0",
+            borderRadius: 12,
+            border: `1px solid ${COLORS.thulian}30`,
+            background: isPlaying ? `${COLORS.veranda}20` : "rgba(255,255,255,0.6)",
+            backdropFilter: "blur(10px)",
+            color: isPlaying ? COLORS.veranda : COLORS.primary,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            fontSize: 14,
+            fontWeight: 500,
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+          onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+        >
+          <SpeakerHigh size={20} /> {audioLoading ? "Loading..." : isPlaying ? "Playing..." : "Listen"}
+        </button>
+        <button
+          style={{
+            ...cardBtn,
+            flex: 1,
+            padding: "14px 0",
+            borderRadius: 12,
+            border: `1px solid ${COLORS.thulian}30`,
+            background: "rgba(255,255,255,0.6)",
+            backdropFilter: "blur(10px)",
+            color: COLORS.primary,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            fontSize: 14,
+            fontWeight: 500,
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+          onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+        >
+          <Heart size={20} /> Share
+        </button>
       </div>
       </div>
     </div>
